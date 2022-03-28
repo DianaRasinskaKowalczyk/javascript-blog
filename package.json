@@ -10,6 +10,7 @@
     "init:gitignore": "curl https://raw.githubusercontent.com/github/gitignore/master/Node.gitignore -o .gitignore",
     "test": "npm-run-all test:*",
     "test:html": "html-validate *.html",
+    "test:js": "eslint js/",
     "build": "npm-run-all build:* test",
     "build:sass": "node-sass --output-style compact -o css sass",
     "build:autoprefixer": "postcss css/*.css --use autoprefixer -d css",
@@ -23,6 +24,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "eslint": "^8.12.0",
     "mkdirp": "^1.0.4",
     "npm-run-all": "^4.1.5",
     "sass": "^1.49.8"
