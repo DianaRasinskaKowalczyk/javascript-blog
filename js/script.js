@@ -47,7 +47,7 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list';
 
-function generateTitleLinks(){
+  function generateTitleLinks(customSelector = ''){
 
   /* [DONE] remove contents of titleList */
 
@@ -57,8 +57,11 @@ function generateTitleLinks(){
 
   /* [DONE] find all the articles and save them to variable: articles */
 
-  const articles = document.querySelectorAll(optArticleSelector);
-    
+  const articles = document.querySelectorAll(optArticleSelector + customSelector);
+    console.log(articles);
+    console.log(customSelector);
+  
+  
   let html = '';
 
   for(let article of articles){
@@ -76,7 +79,7 @@ function generateTitleLinks(){
     /* [DONE] create HTML of the link */
 
     const linkHTML = '<li><a href="#' + articleId + '"><span>' + articleTitle + '</span></a></li>';
-    console.log('linkHTML');
+    console.log(linkHTML);
 
     /* [DONE] insert link into titleList */
 
@@ -190,30 +193,41 @@ function tagClickHandler(event){
   const sameTagLinks = document.querySelectorAll('a[href="' + href + '"]');
   console.log(sameTagLinks);
 
-  /* START LOOP: for each found tag link */
+  /* [DONE]  START LOOP: for each found tag link */
 
   for(let sameTagLink of sameTagLinks){
 
-    /* add class active */
+    /* [DONE]  add class active */
 
     sameTagLink.classList.add('active');
     console.log(sameTagLink);
 
-  /* END LOOP: for each found tag link */
+  /* [DONE] END LOOP: for each found tag link */
 
   }
 
   /* execute function "generateTitleLinks" with article selector as argument */
+
+generateTitleLinks('[data-tags~="' + tag + '"]');
+
 }
 
 function addClickListenersToTags(){
   /* find all links to tags */
 
+  const allTagsLinks = document.querySelectorAll('a[href^="#tag-"]');
+
   /* START LOOP: for each link */
+
+  for(let allTagsLink of allTagsLinks){
 
     /* add tagClickHandler as event listener for that link */
 
+    allTagsLink.addEventListener('click', tagClickHandler);
+
   /* END LOOP: for each link */
+  }
+
 }
 
 addClickListenersToTags();
