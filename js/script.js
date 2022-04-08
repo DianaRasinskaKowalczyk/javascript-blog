@@ -46,7 +46,8 @@ const optArticleSelector = '.post',
   optTitleSelector = '.post-title',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
-  optArticleAuthorSelector = '.post-author'
+  optArticleAuthorSelector = '.post-author',
+  optTagsListSelector = '.tags.list'
 
   function generateTitleLinks(customSelector = ''){
 
@@ -99,12 +100,16 @@ const optArticleSelector = '.post',
 generateTitleLinks();
 
 function generateTags(){
-  /* [DONE] find all articles */
+
+    /* [DONE] [NEW] create a new variable allTags with an empty object */
+  let allTags = { };
+
+    /* [DONE] find all articles */
 
   const articles = document.querySelectorAll(optArticleSelector);
   console.log(articles);
 
-  /* [DONE] START LOOP: for every article: */
+    /* [DONE] START LOOP: for every article: */
 
   for(let article of articles){
 
@@ -140,16 +145,61 @@ function generateTags(){
     html = html + taglinkHTML;
     console.log(html);
 
+    /* [DONE] [NEW] check if this link is NOT already in allTags */
+
+    if(!allTags.hasOwnProperty(tag)){
+
+      /* [DONE] [NEW] add tag to allTags object */
+      allTags[tag] = 1;
+    } else {
+      allTags[tag]++;
+    }
+
     /* [DONE] END LOOP: for each tag */
+
+  }
 
     /* [DONE] insert HTML of all the links into the tags wrapper */
 
     tagList.innerHTML = html;
 
   /* [DONE] END LOOP: for every article: */
+  
   }
+
+  /* [NEW] find list of tags in right column */
+
+  const tagList = document.querySelector(optTagsListSelector);
+
+  /* [NEW] add html from allTags to tagList */
+
+  // tagList.innerHTML = allTags.join(' ');
+
+  console.log(allTags);
+
+  /* [NEW] create variable for all links HTML code */
+
+  let allTagsHTML = '';
+
+  /* [NEW] START LOOP: for each tag in allTags */
+
+  for(let tag of allTags){
+    /* [NEW] generate code of a link and add it to allTagsHTML */
+
+   // allTagsHTML += tag + ' (' + allTags[tag] + ') ';
+
+   allTagsHTML += '<li><a href="#tag-' + tag + ' (' + allTags[tag] + ') '">'<span>' + tag + '</span></a></li>'; 
+
   }
+
+  /* [NEW] END LOOP: for each tag in allTags */
+
+  /* [NEW] add html from allTagsHTML to tagList */
+
+  tagList.innerHTML = allTagsHTML;
+
 }
+
 generateTags();
 
 
