@@ -88,9 +88,7 @@ body {
 }
 
 .list-horizontal {
-  li {
-    display: inline-block;
-  }
+    display: inline;
 }
 
 /* Authors */
@@ -119,4 +117,31 @@ body {
   p {
     margin: 0 10px 0 0;
   }
+}
+
+/* Tags */
+
+.tag-size-1{
+  font-size: 12px;
+  color:aqua;
+}
+
+.tag-size-2{
+  font-size: 14px;
+  color:aquamarine;
+}
+
+.tag-size-3{
+  font-size: 16px;
+  color:cornflowerblue;
+}
+
+.tag-size-4{
+  font-size: 20px;
+  color:darkblue;
+}
+
+.tag-size-6{
+  font-size: 24px;
+  color:darkgreen;
 }

@@ -47,7 +47,9 @@ const optArticleSelector = '.post',
   optTitleListSelector = '.titles',
   optArticleTagsSelector = '.post-tags .list',
   optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags.list'
+  optTagsListSelector = '.tags.list',
+  optCloudClassCount = 5,
+  optCloudClassCountPrefix = 'tag-size-' 
 
   function generateTitleLinks(customSelector = ''){
 
@@ -98,6 +100,70 @@ const optArticleSelector = '.post',
   }
 }
 generateTitleLinks();
+
+    /* Add function calculateTagsParams(tags) */
+
+function calculateTagsParams(tags){
+
+    /* define const params */
+
+    const params = {
+      max:0,
+      min:999999
+    }
+
+  /* START LOOP: for every tag: */
+
+  for ( let tag in tags){
+    console.log(tag + ' is used ' + tags[tag] + ' times ');
+
+    /* find params.max */
+
+    if(tags[tag] > params.max) {
+      params.max = tags[tag];
+    }
+
+    /* find params.min */
+
+    if(tags[tag] < params.min) {
+      params.min = tags[tag];
+    }
+
+    /* END LOOP: for each tag */
+
+  }
+    return params
+}
+
+  /* Add a function calculateTagClass */
+
+function calculateTagClass(count, params){
+
+  /* Find how far is the tag from the minimum number - substract minimum number of tags from a given tag */ 
+
+  const normalizedCount = count - params.min;
+  console.log('normalizedCount:', normalizedCount)
+
+  /* Find how far maximum can a tag be from a minimum number - substract params.min from params.max */
+
+  const normalizedMax = params.max - params.min;
+  console.log('normalizedMax:', normalizedMax)
+
+  /* Divide normalizedCount by normalizedMax to get percentage of where the tag is between min and max */
+
+  const percentage = normalizedCount / normalizedMax;
+
+  /* Find a tag class number */
+
+  const classNumber = Math.floor(percentage * (optCloudClassCount - 1) + 1);
+
+  /* Another way to describe a function but without all the const */
+  // classNumber = Math.floor( ( (count - params.min) / (params.max - params.min) ) * optCloudClassCount + 1 );
+
+  return optCloudClassCountPrefix + classNumber;
+}
+
+  /* Add a function generateTags */
 
 function generateTags(){
 
@@ -177,6 +243,12 @@ function generateTags(){
 
   console.log(allTags);
 
+  /* call a function calculateTagsParams(allTags) to find min and max use of all tags */
+
+  const tagsParams = calculateTagsParams(allTags);
+  console.log('tagsParams:', tagsParams)
+
+
   /* [NEW] create variable for all links HTML code */
 
   let allTagsHTML = '';
@@ -186,7 +258,9 @@ function generateTags(){
   for(let tag in allTags){
     /* [NEW] generate code of a link and add it to allTagsHTML */
 
-   allTagsHTML += `<li><a href="#tag-${tag}(${allTags[tag]})"><span>${tag}</span></a></li>`; 
+
+    allTagsHTML += `<li><a href="#tag-${tag}" class ="${calculateTagClass}(${allTags[tag]}, ${tagsParams})"><span>${tag}</span></a>(${allTags[tag]})</li>`; 
+    console.log('allTagsHTML:', allTagsHTML);
 
   }
 
