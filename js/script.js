@@ -1,5 +1,15 @@
 'use strict';
 
+const optArticleSelector = '.post',
+  optTitleSelector = '.post-title',
+  optTitleListSelector = '.titles',
+  optArticleTagsSelector = '.post-tags .list',
+  optArticleAuthorSelector = '.post-author',
+  optTagsListSelector = '.tags.list',
+  optAuthorsListSelector = '.authors.list',
+  optCloudClassCount = 5,
+  optCloudClassCountPrefix = 'tag-size-' 
+
 function titleClickHandler(event){
   event.preventDefault();
   const clickedElement = this;
@@ -41,16 +51,6 @@ function titleClickHandler(event){
   targetArticle.classList.add('active');
   console.log('Article is visible');
 }
-
-const optArticleSelector = '.post',
-  optTitleSelector = '.post-title',
-  optTitleListSelector = '.titles',
-  optArticleTagsSelector = '.post-tags .list',
-  optArticleAuthorSelector = '.post-author',
-  optTagsListSelector = '.tags.list',
-  optAuthorsListSelector = '.authors.list',
-  optCloudClassCount = 5,
-  optCloudClassCountPrefix = 'tag-size-' 
 
   function generateTitleLinks(customSelector = ''){
 
