@@ -48,6 +48,7 @@ const optArticleSelector = '.post',
   optArticleTagsSelector = '.post-tags .list',
   optArticleAuthorSelector = '.post-author',
   optTagsListSelector = '.tags.list',
+  optAuthorsListSelector = '.authors.list',
   optCloudClassCount = 5,
   optCloudClassCountPrefix = 'tag-size-' 
 
@@ -259,7 +260,7 @@ function generateTags(){
     /* [NEW] generate code of a link and add it to allTagsHTML */
 
 
-    allTagsHTML += `<li><a href="#tag-${tag}" class ="${calculateTagClass}(${allTags[tag]}, ${tagsParams})"><span>${tag}</span></a>(${allTags[tag]})</li>`; 
+    allTagsHTML += `<li><a href="#tag-${tag}" class="${calculateTagClass(allTags[tag], tagsParams)}"><span>${tag}</span></a></li> `; 
     console.log('allTagsHTML:', allTagsHTML);
 
   }
@@ -362,51 +363,92 @@ addClickListenersToTags();
   /* [DONE] ADD optArticleAuthorSelector */
 
 
-function generateAuthors (){
-
-/* [DONE] find all articles */
-
-const articles = document.querySelectorAll(optArticleSelector);
-console.log(articles);
-
-/* [DONE] START LOOP: for every article: */
-
-for(let article of articles){
-
-  /* [DONE] find author wrapper */
-
-  const authorWrapper = article.querySelector(optArticleAuthorSelector);
-  console.log(authorWrapper);
+  function generateAuthors (){
   
-  /* [DONE] make html variable with empty string */
+    /* [NEW] create a new variable allAuthors with an empty object */
+  let allSideAuthors = { };
 
-  let html = '';
+    /* find all articles */
+    
+    const articles = document.querySelectorAll(optArticleSelector);
+    console.log(articles);
+    
+    /* [DONE] START LOOP: for every article: */
+    
+    for(let article of articles){
+    
+      /* [DONE] find author wrapper */
+    
+      const authorWrapper = article.querySelector(optArticleAuthorSelector);
+      console.log(authorWrapper);
+      
+      /* [DONE] make html variable with empty string */
+    
+      let html = '';
+    
+      /* [DONE] get author from data-author attribute */
+    
+      const articleAuthor = article.getAttribute('data-author');
+      console.log(articleAuthor);
+    
+      /* [DONE] generate HTML of the link */
+    
+      const authorlinkHTMLTemplate = '<a href="#author-'+ articleAuthor +'">' + 'by ' + articleAuthor +'</a>';
+      console.log(authorlinkHTMLTemplate);
+    
+      /* [DONE] add generated code to html variable */
+    
+      html = html + authorlinkHTMLTemplate;
+      console.log(html);
+      
+      /* [NEW] check if this link is NOT already in allAuthors */
 
-  /* [DONE] get author from data-author attribute */
+    if(!allSideAuthors.hasOwnProperty(articleAuthor)){
 
-  const articleAuthor = article.getAttribute('data-author');
-  console.log(articleAuthor);
+      /* [DONE] [NEW] add articleAuthor to allSideAuthors object */
+      allSideAuthors[articleAuthor] = 1;
+    } else {
+      allSideAuthors[articleAuthor]++;
+    }
+    
+      /* [DONE] insert HTML of all the links into the author wrapper */
+    
+      authorWrapper.innerHTML = html;
+    
+      /* [DONE] END LOOP: for every article: */
+    }
+  
+  /* [NEW] find list of authors in right column */
 
-  /* [DONE] generate HTML of the link */
+  const authorRightList = document.querySelector(optAuthorsListSelector);
+  
+  /* [NEW] create variable for all links HTML code */
 
-  const authorlinkHTMLTemplate = '<a href="#author-'+ articleAuthor +'">' + 'by ' + articleAuthor +'</a>';
-  console.log(authorlinkHTMLTemplate);
+  let allSideAuthorsHTML = '';
 
-  /* [DONE] add generated code to html variable */
+  
+  
+  /* [NEW] START LOOP: for each author in allSideAuthors */
 
-  html = html + authorlinkHTMLTemplate;
-  console.log(html);
-
-  /* [DONE] insert HTML of all the links into the author wrapper */
-
-  authorWrapper.innerHTML = html;
-
-  /* [DONE] END LOOP: for every article: */
-}
-}
-generateAuthors();
+  for(let articleAuthor in allSideAuthors){
+    /* [NEW] generate code of a link and add it to allSideAuthorsHTML */
 
 
+
+    allSideAuthorsHTML += `<li><a href="#author-${articleAuthor}">${articleAuthor} ( ${allSideAuthors[articleAuthor]} )</a></li>`;
+    console.log('allSideAuthorsHTML:', allSideAuthorsHTML);
+    
+  }
+
+  /* [NEW] END LOOP: for each author in allSideAuthors */
+  
+   /* [NEW] add html from allSideAuthorsHTML to authorRightList */
+
+  authorRightList.innerHTML = allSideAuthorsHTML;
+  
+    }
+    generateAuthors();
+    
 
 function authorClickHandler(event){
   /* [DONE] prevent default action for this event */
